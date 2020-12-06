@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".DashboardFragment"
-    android:layout_marginTop="50dp"
-    android:layout_marginBottom="45dp">
+    android:layout_marginTop="40dp">
 
 
     <androidx.cardview.widget.CardView
@@ -34,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:text="Income"
                 android:textColor="@color/black"
-                android:textSize="25sp"
+                android:textSize="22sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.159"
@@ -48,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:text="Expense"
                 android:textColor="@color/red"
-                android:textSize="25sp"
+                android:textSize="22sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.804"
@@ -62,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:text="00.00"
                 android:textColor="@color/black"
-                android:textSize="25sp"
+                android:textSize="22sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.175"
@@ -76,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:text="00.00"
                 android:textColor="@color/red"
-                android:textSize="25sp"
+                android:textSize="22sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.787"
