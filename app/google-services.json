@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "822609565599",
+    "firebase_url": "https://android3-14eb1.firebaseio.com",
+    "project_id": "android3-14eb1",
+    "storage_bucket": "android3-14eb1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:822609565599:android:5aff4f5a4e258561e9cfaa",
+        "android_client_info": {
+          "package_name": "edu.ucucite.androidbudget"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "822609565599-p5uel10kte77q5t0jdsjqumg82bfjp64.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.ucucite.androidbudget",
+            "certificate_hash": "b77f38db03653809092a3f13054adbb9e2abdba4"
+          }
+        },
+        {
+          "client_id": "822609565599-24j8r6odcj0qvtl5fp360q0oq8faeko8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0WRb2GHGrRY5yvAz1Pgf_1SrJwfqO93o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "822609565599-24j8r6odcj0qvtl5fp360q0oq8faeko8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
