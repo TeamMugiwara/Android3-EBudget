@@ -51,7 +51,7 @@
                 android:id="@+id/type_edit"
                 android:layout_width="204dp"
                 android:layout_height="49dp"
-                android:hint="0.00" />
+                android:hint="Salary" />
 
     </LinearLayout>
 
@@ -73,7 +73,7 @@
                 android:id="@+id/note_edit"
                 android:layout_width="204dp"
                 android:layout_height="49dp"
-                android:hint="0.00" />
+                android:hint="This month's salary" />
 
     </LinearLayout>
 
