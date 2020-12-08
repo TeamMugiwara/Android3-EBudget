@@ -15,8 +15,11 @@ import android.widget.TextView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import edu.ucucite.androidbudget.Model.Data;
 
@@ -31,6 +34,8 @@ public class IncomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private FirebaseRecyclerAdapter adapter;
 
+    private TextView incomeTotalSum;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -38,11 +43,12 @@ public class IncomeFragment extends Fragment {
         View myview = inflater.inflate(R.layout.fragment_income, container, false);
 
         mAuth = FirebaseAuth.getInstance();
-
         FirebaseUser mUser = mAuth.getCurrentUser();
         String uid = mUser.getUid();
 
         mIncomeDatabase = FirebaseDatabase.getInstance().getReference().child("IncomeData").child(uid);
+
+        incomeTotalSum = myview.findViewById(R.id.income_txt_result);
 
         recyclerView = myview.findViewById(R.id.recycler_id_income);
 
@@ -52,6 +58,31 @@ public class IncomeFragment extends Fragment {
         layoutManager.setStackFromEnd(true);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
+
+        mIncomeDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                int totalValue = 0;
+
+                for (DataSnapshot mysnapshot:dataSnapshot.getChildren()){
+
+                    Data data = mysnapshot.getValue(Data.class);
+
+                    totalValue+=data.getAmount();
+
+                    String setTotalValue = String.valueOf(totalValue);
+
+                    incomeTotalSum.setText(setTotalValue);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         return myview;
     }
@@ -77,10 +108,12 @@ public class IncomeFragment extends Fragment {
             }
         };
 
+        recyclerView.setAdapter(adapter);
+
 
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         View mView;
 

@@ -39,7 +39,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         toolbar.setTitle("Android Budget");
         setSupportActionBar(toolbar);
 
-       // bottomNavigationView = findViewById(R.id.bottomNavigationBar);
+       bottomNavigationView = findViewById(R.id.bottomNavigationBar);
         frameLayout = findViewById(R.id.main_frame);
         DrawerLayout drawerLayout=findViewById(R.id.drawer_layout);
 
@@ -58,6 +58,29 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         expenseFragment = new ExpenseFragment();
 
         setFragment(dashboardFragment);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.dashboard:
+                        setFragment(dashboardFragment);
+                        bottomNavigationView.setItemBackgroundResource(R.drawable.gradient);
+                        return true;
+
+                    case R.id.income:
+                        setFragment(incomeFragment);
+                        bottomNavigationView.setItemBackgroundResource(R.drawable.gradient);
+                        return true;
+
+                    case R.id.expense:
+                        setFragment(expenseFragment);
+                        bottomNavigationView.setItemBackgroundResource(R.drawable.gradient);
+                    default:
+                        return false;
+                }
+            }
+        });
 
     }
 
