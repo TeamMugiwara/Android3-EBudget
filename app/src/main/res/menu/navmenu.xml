@@ -17,4 +17,8 @@
         android:title="Savings"
         android:icon="@drawable/savings"/>
 
+    <item
+        android:title="About"
+        android:icon="@drawable/about"/>
+
 </menu>
