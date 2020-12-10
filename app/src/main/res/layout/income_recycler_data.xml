@@ -17,9 +17,9 @@
 
         <TextView
             android:id="@+id/date_txt_income"
-            android:layout_width="111dp"
-            android:layout_height="34dp"
-            android:layout_marginStart="32dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:layout_marginTop="12dp"
             android:fontFamily="monospace"
             android:text="6 June 2018"
@@ -27,47 +27,49 @@
             android:textColor="@color/black"
             android:textSize="16dp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/note_txt_income"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.084"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/type_txt_income"
-            android:layout_width="91dp"
-            android:layout_height="27dp"
-            android:layout_marginStart="32dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
             android:maxLines="1"
             android:text="Type"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="@android:color/black"
             android:textSize="17dp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/date_txt_income"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.187" />
+            app:layout_constraintVertical_bias="0.164" />
 
         <TextView
             android:id="@+id/note_txt_income"
-            android:layout_width="327dp"
-            android:layout_height="32dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/type_txt_income"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="16dp"
             android:maxLines="1"
             android:text="Description"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="@android:color/black"
             android:textSize="15dp"
+            app:layout_constraintStart_toEndOf="@+id/textView9"
+            app:layout_constraintTop_toBottomOf="@+id/date_txt_income"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.753"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintHorizontal_bias="0.056"
+            app:layout_constraintVertical_bias="1.0" />
 
         <TextView
             android:id="@+id/ammount_txt_income"
-            android:layout_width="87dp"
-            android:layout_height="30dp"
+            android:layout_width="56dp"
+            android:layout_height="31dp"
             android:fontFamily="sans-serif-black"
             android:text="00000"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
@@ -76,10 +78,10 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.829"
+            app:layout_constraintHorizontal_bias="0.592"
             app:layout_constraintStart_toEndOf="@+id/type_txt_income"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.2" />
+            app:layout_constraintVertical_bias="0.179" />
 
         <TextView
             android:id="@+id/textView5"
@@ -87,15 +89,29 @@
             android:layout_height="32dp"
             android:fontFamily="monospace"
             android:text="₱"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textStyle="bold"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="17.5dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/ammount_txt_income"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/type_txt_income"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.206" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Note:"
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            app:layout_constraintTop_toBottomOf="@+id/date_txt_income"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.117"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_bias="0.555" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
