@@ -1,5 +1,6 @@
 package edu.ucucite.androidbudget;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -20,6 +23,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.text.DateFormat;
+import java.util.Date;
 
 import edu.ucucite.androidbudget.Model.Data;
 
@@ -33,6 +39,22 @@ public class ExpenseFragment extends Fragment {
     private RecyclerView recyclerView;
 
     private TextView expenseSum;
+
+    //Edit texts
+    private EditText edtAmount;
+    private EditText edtType;
+    private EditText edtNote;
+
+    //Buttons
+    private Button btnUpdate;
+    private Button btnDelete;
+
+    //Data items
+    private String type;
+    private String note;
+    private int amount;
+
+    private String post_key;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -98,11 +120,25 @@ public class ExpenseFragment extends Fragment {
                         mExpenseDatabase
                 ) {
             @Override
-            protected void populateViewHolder(MyViewHolder viewHolder, Data model, int position) {
+            protected void populateViewHolder(MyViewHolder viewHolder, final Data model, final int position) {
                 viewHolder.setType(model.getType());
                 viewHolder.setNote(model.getNote());
                 viewHolder.setDate(model.getDate());
                 viewHolder.setAmount(model.getAmount());
+
+                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        post_key = getRef(position).getKey();
+
+                        type = model.getType();
+                        note = model.getNote();
+                        amount = model.getAmount();
+
+                        updateDataItem();
+                    }
+                });
             }
         };
 
@@ -141,6 +177,70 @@ public class ExpenseFragment extends Fragment {
             String stamount = String.valueOf(amount);
             mAmount.setText(stamount);
         }
+    }
+
+    private void updateDataItem(){
+
+        AlertDialog.Builder mydialog = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        View myview = inflater.inflate(R.layout.update_data_item, null);
+        mydialog.setView(myview);
+
+        edtAmount = myview.findViewById(R.id.amount_edit);
+        edtType = myview.findViewById(R.id.type_edit);
+        edtNote = myview.findViewById(R.id.note_edit);
+
+        //Set data
+        edtType.setText(type);
+        edtType.setSelection(type.length());
+
+        edtNote.setText(note);
+        edtNote.setSelection(note.length());
+
+        edtAmount.setText(String.valueOf(amount));
+        edtAmount.setSelection(String.valueOf(amount).length());
+
+        btnUpdate = myview.findViewById(R.id.btnUpdate);
+        btnDelete = myview.findViewById(R.id.btnDelete);
+
+        final AlertDialog dialog = mydialog.create();
+
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                type = edtType.getText().toString().trim();
+                note = edtNote.getText().toString().trim();
+
+                String upamount = String.valueOf(amount);
+
+                upamount = edtAmount.getText().toString().trim();
+
+                int myAmount = Integer.parseInt(upamount);
+
+                String mDate = DateFormat.getDateInstance().format(new Date());
+
+                Data data = new Data(myAmount, type, note, post_key, mDate);
+
+                mExpenseDatabase.child(post_key).setValue(data);
+
+                dialog.dismiss();
+
+            }
+        });
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                mExpenseDatabase.child(post_key).removeValue();
+
+                dialog.dismiss();
+
+            }
+        });
+
+        dialog.show();
     }
 
 }

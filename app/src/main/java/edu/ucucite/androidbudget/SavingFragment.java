@@ -1,19 +1,25 @@
 package edu.ucucite.androidbudget;
 
-import android.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
+import androidx.lifecycle.ViewModelProviders;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,18 +35,17 @@ import java.util.Date;
 
 import edu.ucucite.androidbudget.Model.Data;
 
+public class SavingFragment extends Fragment {
 
-public class IncomeFragment extends Fragment {
-
-    //Firebase DB
     private FirebaseAuth mAuth;
-    private DatabaseReference mIncomeDatabase;
+    private DatabaseReference mSavingsDatabase;
 
     //RecyclerView
     private RecyclerView recyclerView;
-    private FirebaseRecyclerAdapter adapter;
 
-    private TextView incomeTotalSum;
+    private ImageButton btn_saving;
+
+    private TextView savingsTotalSum;
 
     //Edit texts
     private EditText edtAmount;
@@ -59,20 +64,21 @@ public class IncomeFragment extends Fragment {
     private String post_key;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View myview = inflater.inflate(R.layout.fragment_income, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View myview = inflater.inflate(R.layout.saving_fragment, container, false);
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser mUser = mAuth.getCurrentUser();
         String uid = mUser.getUid();
 
-        mIncomeDatabase = FirebaseDatabase.getInstance().getReference().child("IncomeData").child(uid);
+        mSavingsDatabase = FirebaseDatabase.getInstance().getReference().child("SavingsDatabase").child(uid);
 
-        incomeTotalSum = myview.findViewById(R.id.income_txt_result);
+        savingsTotalSum = myview.findViewById(R.id.savings_txt_result);
 
-        recyclerView = myview.findViewById(R.id.recycler_id_income);
+        recyclerView = myview.findViewById(R.id.recycler_id_savings);
+
+        btn_saving = myview.findViewById(R.id.btn_saving);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
 
@@ -81,7 +87,7 @@ public class IncomeFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
 
-        mIncomeDatabase.addValueEventListener(new ValueEventListener() {
+        mSavingsDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -95,9 +101,10 @@ public class IncomeFragment extends Fragment {
 
                     String setTotalValue = String.valueOf(totalValue);
 
-                    incomeTotalSum.setText(setTotalValue);
+                    savingsTotalSum.setText(setTotalValue);
 
                 }
+
             }
 
             @Override
@@ -106,8 +113,82 @@ public class IncomeFragment extends Fragment {
             }
         });
 
+        btn_saving.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addData();
+            }
+
+            private void addData() {
+                savingsDataInsert();
+            }
+        });
+
         return myview;
     }
+
+
+    public void savingsDataInsert(){
+        AlertDialog.Builder mydialog = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        View myview = inflater.inflate(R.layout.custom_layout_insertdata, null);
+        mydialog.setView(myview);
+        final AlertDialog dialog = mydialog.create();
+
+        dialog.setCancelable(false);
+        final EditText edtAmmount=myview.findViewById(R.id.amount_edit);
+        final EditText edtType=myview.findViewById(R.id.type_edit);
+        final EditText edtNote=myview.findViewById(R.id.note_edit);
+
+        Button btnSave=myview.findViewById(R.id.btnSave);
+        Button btnCansel=myview.findViewById(R.id.btnCancel);
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String type=edtType.getText().toString().trim();
+                String ammount=edtAmmount.getText().toString().trim();
+                String note=edtNote.getText().toString().trim();
+
+                if (TextUtils.isEmpty(type)){
+                    edtType.setError("Required Field..");
+                    return;
+                }
+
+                if (TextUtils.isEmpty(ammount)){
+                    edtAmmount.setError("Required Field..");
+                    return;
+                }
+
+                int ourammontint=Integer.parseInt(ammount);
+
+                if (TextUtils.isEmpty(note)){
+                    edtNote.setError("Required Field..");
+                    return;
+                }
+
+                String id=mSavingsDatabase.push().getKey();
+                String mDate = DateFormat.getDateInstance().format(new Date());
+
+                Data data=new Data(ourammontint,type,note,id,mDate);
+                mSavingsDatabase.child(id).setValue(data);
+
+                Toast.makeText(getActivity(),"Data ADDED", Toast.LENGTH_SHORT).show();
+
+                dialog.dismiss();
+            }
+        });
+        btnCansel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+
+    }
+
 
     @Override
     public void onStart() {
@@ -116,9 +197,9 @@ public class IncomeFragment extends Fragment {
         FirebaseRecyclerAdapter<Data, MyViewHolder>adapter=new FirebaseRecyclerAdapter<Data, MyViewHolder>
                 (
                         Data.class,
-                        R.layout.income_recycler_data,
+                        R.layout.savings_recycler_data,
                         MyViewHolder.class,
-                        mIncomeDatabase
+                        mSavingsDatabase
                 ) {
             @Override
             protected void populateViewHolder(MyViewHolder viewHolder, final Data model, final int position) {
@@ -149,6 +230,8 @@ public class IncomeFragment extends Fragment {
 
     }
 
+
+
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         View mView;
@@ -159,23 +242,23 @@ public class IncomeFragment extends Fragment {
         }
 
         private void setType(String type) {
-            TextView mType = mView.findViewById(R.id.type_txt_income);
+            TextView mType = mView.findViewById(R.id.type_txt_savings);
             mType.setText(type);
         }
 
         private void setNote(String note) {
 
-            TextView mNote = mView.findViewById(R.id.note_txt_income);
+            TextView mNote = mView.findViewById(R.id.note_txt_savings);
             mNote.setText(note);
         }
 
         private void setDate(String date) {
-            TextView mDate = mView.findViewById(R.id.date_txt_income);
+            TextView mDate = mView.findViewById(R.id.date_txt_savings);
             mDate.setText(date);
         }
 
         private void setAmount(int amount) {
-            TextView mAmount = mView.findViewById(R.id.ammount_txt_income);
+            TextView mAmount = mView.findViewById(R.id.amount_txt_savings);
             String stamount = String.valueOf(amount);
             mAmount.setText(stamount);
         }
@@ -183,7 +266,7 @@ public class IncomeFragment extends Fragment {
 
     private void updateDataItem(){
 
-        AlertDialog.Builder mydialog = new AlertDialog.Builder(getActivity());
+        android.app.AlertDialog.Builder mydialog = new android.app.AlertDialog.Builder(getActivity());
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View myview = inflater.inflate(R.layout.update_data_item, null);
         mydialog.setView(myview);
@@ -205,7 +288,7 @@ public class IncomeFragment extends Fragment {
         btnUpdate = myview.findViewById(R.id.btnUpdate);
         btnDelete = myview.findViewById(R.id.btnDelete);
 
-        final AlertDialog dialog = mydialog.create();
+        final android.app.AlertDialog dialog = mydialog.create();
 
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -224,7 +307,7 @@ public class IncomeFragment extends Fragment {
 
                 Data data = new Data(myAmount, type, note, post_key, mDate);
 
-                mIncomeDatabase.child(post_key).setValue(data);
+                mSavingsDatabase.child(post_key).setValue(data);
 
                 dialog.dismiss();
 
@@ -234,7 +317,7 @@ public class IncomeFragment extends Fragment {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mIncomeDatabase.child(post_key).removeValue();
+                mSavingsDatabase.child(post_key).removeValue();
 
                 dialog.dismiss();
             }

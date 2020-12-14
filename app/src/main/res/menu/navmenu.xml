@@ -18,7 +18,12 @@
         android:icon="@drawable/savings"/>
 
     <item
-        android:title="About"
-        android:icon="@drawable/about"/>
+        android:id="@+id/mylist"
+        android:title="My List"
+        android:icon="@drawable/list"/>
+
+    <item
+        android:title="Sign Out"
+        android:icon="@drawable/signout"/>
 
 </menu>

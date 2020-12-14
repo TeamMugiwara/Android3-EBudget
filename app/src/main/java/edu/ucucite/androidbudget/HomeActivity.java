@@ -99,6 +99,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.expense:
                 fragment = new ExpenseFragment();
                 break;
+
+            case R.id.savings:
+                fragment = new SavingFragment();
+                break;
+
+            case R.id.mylist:
+                fragment = new MyListFragment();
+                break;
         }
 
         if (fragment!=null){
