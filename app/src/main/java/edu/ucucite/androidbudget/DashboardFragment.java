@@ -21,8 +21,11 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -48,6 +51,10 @@ public class DashboardFragment extends Fragment {
     //Animation
     private Animation FadOpen,FadeClose;
 
+    //Totals
+    private TextView totalIncome;
+    private TextView totalExpense;
+
     //Firebase
     private FirebaseAuth mAuth;
     private DatabaseReference mIncomeDatabase;
@@ -60,13 +67,13 @@ public class DashboardFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View myview =  inflater.inflate(R.layout.fragment_dashboard, container, false);
 
         mAuth=FirebaseAuth.getInstance();
-        FirebaseUser mUser=mAuth.getCurrentUser();
+        final FirebaseUser mUser=mAuth.getCurrentUser();
         String uid=mUser.getUid();
 
         mIncomeDatabase= FirebaseDatabase.getInstance().getReference().child("IncomeData").child(uid);
@@ -79,6 +86,10 @@ public class DashboardFragment extends Fragment {
         //Connect floating text.
         fab_income_txt=myview.findViewById(R.id.income_text);
         fab_expense_txt=myview.findViewById(R.id.expense_text);
+
+        //Totals
+        totalIncome = myview.findViewById(R.id.income_result);
+        totalExpense = myview.findViewById(R.id.expense_result);
 
         //Animation connect..
         FadOpen= AnimationUtils.loadAnimation(getActivity(),R.anim.fade_open);
@@ -113,6 +124,53 @@ public class DashboardFragment extends Fragment {
                 }
             }
         });
+
+        mIncomeDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                int total = 0;
+
+                for (DataSnapshot mysnap:dataSnapshot.getChildren()){
+                    Data data = mysnap.getValue(Data.class);
+
+                    total +=data.getAmount();
+
+                    String stTotal = String.valueOf(total);
+
+                    totalIncome.setText("₱ "+stTotal+".00");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        }) ;
+
+        mExpenseDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                int exptotal = 0;
+
+                for (DataSnapshot mysnap:dataSnapshot.getChildren()){
+                    Data data = mysnap.getValue(Data.class);
+
+                    exptotal +=data.getAmount();
+
+                    String stTotal = String.valueOf(exptotal);
+
+                    totalExpense.setText("₱ "+stTotal+".00");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        }) ;
+
         return myview;
     }
 

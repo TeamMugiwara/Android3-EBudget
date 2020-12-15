@@ -198,6 +198,12 @@ public class MyListFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
 
+                        post_key = getRef(position).getKey();
+
+                        type = model.getType();
+                        amount = model.getAmount();
+
+                        updateDataItem();
 
                     }
                 });
@@ -232,6 +238,58 @@ public class MyListFragment extends Fragment {
         }
     }
 
+
+    private void updateDataItem(){
+
+        android.app.AlertDialog.Builder mydialog = new android.app.AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        View myview = inflater.inflate(R.layout.update_mylist_data, null);
+        mydialog.setView(myview);
+
+        edtAmount = myview.findViewById(R.id.amount_edit);
+        edtType = myview.findViewById(R.id.type_edit);
+
+        btnUpdate = myview.findViewById(R.id.btnUpdate);
+        btnDelete = myview.findViewById(R.id.btnDelete);
+
+        //Set data
+        edtType.setText(type);
+        edtType.setSelection(type.length());
+
+
+        edtAmount.setText(String.valueOf(amount));
+        edtAmount.setSelection(String.valueOf(amount).length());
+
+        btnUpdate = myview.findViewById(R.id.btnUpdate);
+        btnDelete = myview.findViewById(R.id.btnDelete);
+
+        final android.app.AlertDialog dialog = mydialog.create();
+
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                type = edtType.getText().toString().trim();
+
+                String upamount = String.valueOf(amount);
+
+                upamount = edtAmount.getText().toString().trim();
+
+                int myAmount = Integer.parseInt(upamount);
+
+
+                DataMylist data = new DataMylist(myAmount, type, post_key);
+
+                mMyListDatabase.child(post_key).setValue(data);
+
+                dialog.dismiss();
+
+
+            }
+        });
+
+        dialog.show();
+    }
 
 
 }

@@ -268,7 +268,7 @@ public class SavingFragment extends Fragment {
 
         android.app.AlertDialog.Builder mydialog = new android.app.AlertDialog.Builder(getActivity());
         LayoutInflater inflater = LayoutInflater.from(getActivity());
-        View myview = inflater.inflate(R.layout.update_data_item, null);
+        View myview = inflater.inflate(R.layout.update_mylist_data, null);
         mydialog.setView(myview);
 
         edtAmount = myview.findViewById(R.id.amount_edit);

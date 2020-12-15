@@ -54,7 +54,7 @@
                 android:text="Income"
                 android:textColor="@color/black"
                 android:textSize="22sp"
-                app:layout_constraintBottom_toTopOf="@+id/icome_set_result"
+                app:layout_constraintBottom_toTopOf="@+id/income_result"
                 app:layout_constraintEnd_toStartOf="@+id/imageView"
                 app:layout_constraintHorizontal_bias="0.437"
                 app:layout_constraintStart_toStartOf="parent"
@@ -76,7 +76,7 @@
                 app:layout_constraintVertical_bias="0.0" />
 
             <TextView
-                android:id="@+id/icome_set_result"
+                android:id="@+id/income_result"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="00.00"
@@ -91,7 +91,7 @@
                 app:layout_constraintVertical_bias="0.697" />
 
             <TextView
-                android:id="@+id/expense_set_result"
+                android:id="@+id/expense_result"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="00.00"
@@ -102,36 +102,9 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.662"
-                app:layout_constraintStart_toEndOf="@+id/icome_set_result"
+                app:layout_constraintStart_toEndOf="@+id/income_result"
                 app:layout_constraintTop_toBottomOf="@+id/textView3"
                 app:layout_constraintVertical_bias="0.0" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="₱"
-                android:textColor="@color/red"
-                android:textSize="22sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/expense_set_result"
-                app:layout_constraintHorizontal_bias="0.969"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.697" />
-
-            <TextView
-                android:id="@+id/textView10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="₱"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="22sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/icome_set_result"
-                app:layout_constraintHorizontal_bias="0.87"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.697" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
